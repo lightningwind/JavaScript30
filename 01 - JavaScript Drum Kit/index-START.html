@@ -58,6 +58,31 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
+  /* Plays the audio file with data-key <e.keyCode> and
+    animates the element div.key with data-key <e.keyCode>. */
+  function playAudio(e) {
+    // Grab a reference to the audio element
+    const audioAttrSelector = `audio[data-key="${e.keyCode}"]`;
+    const audio = document.querySelector(audioAttrSelector);
+    // Grab a reference to the key element
+    const keyAttrSelector = `div.key[data-key="${e.keyCode}"]`;
+    const key = document.querySelector(keyAttrSelector);
+    if (!audio) return; // Invalid key => exit function
+    audio.currentTime = 0; // Rewind to start of audio file
+    audio.play();
+    key.classList.add('playing');
+  }
+
+  /* Removes the transition of element <e.target>. */
+  function removeTransition(e) {
+    if (e.propertyName !== "transform") return;
+    this.classList.remove("playing");
+  }
+
+  const keys = document.querySelectorAll('.key');
+
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playAudio);
 
 </script>
 
